@@ -37,7 +37,7 @@ class FlatpageNode(template.Node):
 
     def render(self, context):
         flatpages = FlatPage_i18n.objects.filter(
-            sites__id=settings.SITE_ID,
+            subsites__id=settings.SITE_ID,
         ).order_by('weight')
 
         # If a prefix was specified, add a filter
@@ -157,6 +157,7 @@ def get_menu(context, key=None):
     return {
         'nodes': menu
     }
+
 
 @register.assignment_tag(takes_context=True)
 def get_flatpage_i18n(context, key=None):

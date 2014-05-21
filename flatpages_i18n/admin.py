@@ -16,14 +16,14 @@ class FlatPageAdmin(MPTTModelAdmin, TranslationAdmin):
     mptt_level_indent = 0
 
     fieldsets = (
-        (None, {'fields': ('parent', 'machine_name', 'url', 'title', 'content', 'sites', )}),
+        (None, {'fields': ('parent', 'machine_name', 'url', 'title', 'content', 'subsites', )}),
         (_(u'Advanced options'), {
             'classes': ('collapse',),
             'fields': ('registration_required', 'template_name')
         })
     )
     list_display = ('indented_title', 'url', 'parent', 'weight')
-    list_filter = ('sites', 'registration_required')
+    list_filter = ('subsites', 'registration_required')
     list_editable = ['parent', 'weight']
     search_fields = ('url', 'title')
     readonly_fields = ('created', 'modified')

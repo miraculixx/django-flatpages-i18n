@@ -26,7 +26,7 @@ class FlatpageForm(forms.ModelForm):
             raise forms.ValidationError(_(u"URL '%(url)s' is missing a trailing slash.") % {'url': url})
 
         # check URL uniqueness
-        sites = self.cleaned_data.get('sites', None)
+        subsites = self.cleaned_data.get('subsites', None)
 
         kwargs = {
             '{0}__{1}'.format(url_key, 'exact'): url,
@@ -36,12 +36,12 @@ class FlatpageForm(forms.ModelForm):
         if self.instance.pk:
             same_url = same_url.exclude(pk=self.instance.pk)
 
-        if sites is None:
-            raise forms.ValidationError(_(u'No sites selected!'))
+        if subsites is None:
+            raise forms.ValidationError(_(u'No subsites selected!'))
 
-        if same_url.filter(sites__in=sites).exists():
-            for site in sites:
-                if same_url.filter(sites=site).exists():
+        if same_url.filter(subsites__in=subsites).exists():
+            for site in subsites:
+                if same_url.filter(subsites=site).exists():
                     raise forms.ValidationError(_(u"Flatpage with URL '%(url)s' already exists \
                                                   for site %(site)s.") % {'url': url, 'site': site})
         return url
