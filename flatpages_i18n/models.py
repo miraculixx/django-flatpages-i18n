@@ -1,5 +1,5 @@
-from django.contrib.sites.models import Site
 from django.db import models
+from django.conf import settings
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,7 +11,7 @@ class FlatPage_i18n(MPTTModel):
 
     parent = TreeForeignKey(
         'self', null=True, blank=True, related_name='children')
-    sites = models.ManyToManyField(Site)
+    subsites = models.ManyToManyField(settings.CUSTOM_SITES_MODEL)
     machine_name = models.CharField(_(u'machine name'), max_length=255,
         null=True, blank=True, default=None)
     url = models.CharField(_(u'URL'), max_length=100, db_index=True,

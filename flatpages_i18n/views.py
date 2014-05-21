@@ -48,7 +48,7 @@ def flatpage(request, url):
 
     kwargs = {
         '{0}__{1}'.format('url_%s' % language, 'exact'): url,
-        '{0}__{1}'.format('sites__id', 'exact'): settings.SITE_ID
+        '{0}__{1}'.format('subsites__id', 'exact'): settings.SITE_ID
     }
 
     try:
