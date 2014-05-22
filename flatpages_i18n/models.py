@@ -2,8 +2,18 @@ from django.db import models
 from django.conf import settings
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django.template import Template, Context
 
 from mptt.models import MPTTModel, TreeForeignKey
+
+
+def _render(content, ctx_dict):
+    """
+    Just a helper function to templatize and render the content into template.
+    """
+    t = Template(content)
+    c = Context(ctx_dict)
+    return t.render(c)
 
 
 class FlatPage_i18n(MPTTModel):
@@ -31,6 +41,10 @@ class FlatPage_i18n(MPTTModel):
     created = models.DateTimeField(_(u'created'), default=now)
     modified = models.DateTimeField(_(u'modified'))
 
+    def __init__(self, *args, **kwargs):
+        super(FlatPage_i18n, self).__init__(*args, **kwargs)
+        self.ctx_dict = {}
+
     class MPTTMeta:
         order_insertion_by = ['weight']
 
@@ -48,6 +62,17 @@ class FlatPage_i18n(MPTTModel):
 
     def get_absolute_url(self):
         return self.url
+
+    def set_ctx_dict(self, ctx_dict):
+        self.ctx_dict = ctx_dict
+
+    @property
+    def rendered_title(self):
+        return _render(self.title, self.ctx_dict)
+
+    @property
+    def rendered_content(self):
+        return _render(self.content, self.ctx_dict)
 
 
 class MenuItem(MPTTModel):
